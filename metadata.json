@@ -1,0 +1,6 @@
+{
+  "name": "XRAY — XLR8 Recon Analytics",
+  "description": "A cross-platform web app for scouting FTC team performances at events, logging match data with reusable generic and custom game-specific metrics, and utilizing AI to generate alliance selection recommendations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

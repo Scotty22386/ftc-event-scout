@@ -1,0 +1,170 @@
+{
+  "entities": {
+    "ScoutingEvent": {
+      "title": "ScoutingEvent",
+      "description": "A FIRST FTC scouting competition event with customized scouting fields.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the event."
+        },
+        "season": {
+          "type": "string",
+          "description": "The season of the event."
+        },
+        "gameName": {
+          "type": "string",
+          "description": "The target game name."
+        },
+        "date": {
+          "type": "string",
+          "description": "The date of the event in YYYY-MM-DD format."
+        },
+        "presetId": {
+          "type": "string",
+          "description": "The game preset ID."
+        },
+        "createdAt": {
+          "type": "integer",
+          "description": "Timestamp when the event was created."
+        }
+      },
+      "required": ["name", "season", "gameName", "date", "presetId", "createdAt"]
+    },
+    "FTCTeam": {
+      "title": "FTCTeam",
+      "description": "An FTC team participating in the event.",
+      "type": "object",
+      "properties": {
+        "teamNumber": {
+          "type": "string",
+          "description": "The unique number of the team."
+        },
+        "teamName": {
+          "type": "string",
+          "description": "The name of the team."
+        },
+        "schoolName": {
+          "type": "string",
+          "description": "The associated school name."
+        },
+        "city": {
+          "type": "string",
+          "description": "The city of the team."
+        },
+        "state": {
+          "type": "string",
+          "description": "The state/region of the team."
+        }
+      },
+      "required": ["teamNumber", "teamName"]
+    },
+    "ScoutLog": {
+      "title": "ScoutLog",
+      "description": "A scout log containing match or pit telemetry statistics for a specific team at an event.",
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "description": "The event ID."
+        },
+        "teamNumber": {
+          "type": "string",
+          "description": "The team number being scouted."
+        },
+        "scoutName": {
+          "type": "string",
+          "description": "The name of the scouter."
+        },
+        "matchNumber": {
+          "type": "string",
+          "description": "The match number, or 'PIT' for pit scouting."
+        },
+        "scoutType": {
+          "type": "string",
+          "description": "The type of scout: 'match' or 'pit'."
+        },
+        "createdAt": {
+          "type": "integer",
+          "description": "Timestamp when the log was recorded."
+        },
+        "autoDrive": {
+          "type": "boolean",
+          "description": "Whether the team exited auto zone."
+        },
+        "autoScoredCount": {
+          "type": "integer",
+          "description": "Base auto scored elements."
+        },
+        "teleopScoredCount": {
+          "type": "integer",
+          "description": "Base teleop scored elements."
+        },
+        "defenseRating": {
+          "type": "integer",
+          "description": "Defense rating (1-5)."
+        },
+        "driverSkill": {
+          "type": "integer",
+          "description": "Driver skill rating (1-5)."
+        },
+        "reliability": {
+          "type": "integer",
+          "description": "Robot reliability rating (1-5)."
+        },
+        "cooperation": {
+          "type": "integer",
+          "description": "Cooperation / communication rating (1-5)."
+        },
+        "notes": {
+          "type": "string",
+          "description": "General observations and notes."
+        }
+      },
+      "required": ["eventId", "teamNumber", "scoutName", "matchNumber", "scoutType", "createdAt"]
+    },
+    "TeamProfile": {
+      "title": "TeamProfile",
+      "description": "A lightweight login profile for an FTC team.",
+      "type": "object",
+      "properties": {
+        "teamNumber": {
+          "type": "string",
+          "description": "Unique team number."
+        },
+        "password": {
+          "type": "string",
+          "description": "Password for login verification."
+        },
+        "season": {
+          "type": "integer",
+          "description": "Competing season selected by the team."
+        },
+        "createdAt": {
+          "type": "integer",
+          "description": "Timestamp when the profile was created."
+        }
+      },
+      "required": ["teamNumber", "password", "season", "createdAt"]
+    }
+  },
+  "firestore": {
+    "events/{eventId}": {
+      "schema": "ScoutingEvent",
+      "description": "Competition events"
+    },
+    "events/{eventId}/teams/{teamNumber}": {
+      "schema": "FTCTeam",
+      "description": "Teams participating in a specific event"
+    },
+    "scout_logs/{logId}": {
+      "schema": "ScoutLog",
+      "description": "Scouting logs registered by scouters"
+    },
+    "team_profiles/{teamNumber}": {
+      "schema": "TeamProfile",
+      "description": "Lightweight team profiles for login and filtering"
+    }
+  }
+}

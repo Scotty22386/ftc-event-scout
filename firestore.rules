@@ -1,0 +1,52 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Reusable identifier validation helper
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Events collection
+    match /events/{eventId} {
+      allow read: if true;
+      allow create, update: if request.resource.data.name is string 
+                            && request.resource.data.name.size() > 0 
+                            && request.resource.data.name.size() <= 150
+                            && request.resource.data.season is string
+                            && request.resource.data.gameName is string;
+      allow delete: if true;
+
+      // Subcollection for teams participating in each event
+      match /teams/{teamNumber} {
+        allow read: if true;
+        allow create, update: if request.resource.data.teamNumber is string 
+                              && request.resource.data.teamNumber.size() > 0
+                              && request.resource.data.teamNumber.size() <= 12
+                              && request.resource.data.teamName is string;
+        allow delete: if true;
+      }
+    }
+
+    // Scout logs registered for matches or pit observations
+    match /scout_logs/{logId} {
+      allow read: if true;
+      allow create, update: if request.resource.data.eventId is string 
+                            && request.resource.data.eventId.size() > 0
+                            && request.resource.data.teamNumber is string
+                            && request.resource.data.scoutName is string
+                            && request.resource.data.matchNumber is string;
+      allow delete: if true;
+    }
+
+    // Team login profiles
+    match /team_profiles/{teamNumber} {
+      allow read, write: if true;
+    }
+  }
+}
